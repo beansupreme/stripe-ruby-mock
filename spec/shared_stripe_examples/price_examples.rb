@@ -108,12 +108,18 @@ shared_examples 'Price API' do
   it 'can filter a price by a lookup key' do
     stripe_helper.create_price(id: 'price One', product: product_id, amount: 54321, lookup_key: 'lookup_price_one')
     stripe_helper.create_price(id: 'price Two', product: product_id, amount: 98765, lookup_key: 'lookup_price_two')
+    stripe_helper.create_price(id: 'price Three', product: product_id, amount: 88123, lookup_key: 'lookup_price_three')
 
-    filtered = Stripe::Price.list(limit: 100, lookup_key: 'lookup_price_two')
+    filtered = Stripe::Price.list(limit: 100, lookup_keys: ['lookup_price_two'])
 
     expect(filtered.count).to eq(1)
     expect(filtered.first.id).to eq('price Two')
-    expect(filtered.first.amount).to eq(98765)
+
+    filtered_with_two = Stripe::Price.list(limit: 100, lookup_keys: ['lookup_price_two', 'lookup_price_three'])
+    expect(filtered_with_two.count).to eq(2)
+    price_ids = filtered_with_two.map(&:id)
+
+    expect(price_ids).to match_array(['price Two', 'price Three'])
   end
 
   describe "Validations", :live => true do

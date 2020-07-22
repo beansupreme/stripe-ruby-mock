@@ -30,8 +30,8 @@ module StripeMock
         limit = params[:limit] ? params[:limit] : 10
         clone = prices.clone
 
-        if params[:lookup_key]
-          clone.delete_if { |k,v| v[:lookup_key] != params[:lookup_key] }
+        if params[:lookup_keys]
+          clone.delete_if { |k,v| !params[:lookup_keys].include?(v[:lookup_key]) }
         end
 
         Data.mock_list_object(clone.values, params.merge!(limit: limit))
