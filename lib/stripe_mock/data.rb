@@ -372,7 +372,7 @@ module StripeMock
     end
 
     def self.mock_subscription_schedule(params={})
-      customer = params[:customer] || "cus_HfNaLBEAHMSAro"
+      customer = params[:customer] || "test_customer"
       {
         id: "mock_sub_sched_123",
         object: "subscription_schedule",
