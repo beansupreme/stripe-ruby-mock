@@ -371,6 +371,73 @@ module StripeMock
       }, params)
     end
 
+    def self.mock_subscription_schedule(params={})
+      customer = params[:customer] || "test_customer"
+      {
+        id: "mock_sub_sched_123",
+        object: "subscription_schedule",
+        canceled_at: nil,
+        completed_at: nil,
+        created: 1595029349,
+        current_phase: {
+          end_date: 1626565349,
+          start_date: 1595029349
+        },
+        customer: customer,
+        default_settings: {
+          billing_cycle_anchor: "automatic",
+          billing_thresholds: nil,
+          collection_method: "charge_automatically",
+          default_payment_method: nil,
+          invoice_settings: nil,
+          transfer_data: nil
+        },
+        end_behavior: "cancel",
+        livemode: false,
+        metadata: {},
+        phases: [
+          {
+            add_invoice_items: [],
+            application_fee_percent: nil,
+            billing_cycle_anchor: nil,
+            billing_thresholds: nil,
+            collection_method: nil,
+            coupon: "3yoXnS4V",
+            default_payment_method: nil,
+            default_tax_rates: [],
+            end_date: 1626565349,
+            invoice_settings: nil,
+            plans: [
+              {
+                billing_thresholds: nil,
+                plan: "price_1H62SHEBG8ykmprMJ5ABjz0q",
+                price: "price_1H62SHEBG8ykmprMJ5ABjz0q",
+                quantity: 2,
+                tax_rates: []
+              },
+              {
+                billing_thresholds: nil,
+                plan: "price_1H62S7EBG8ykmprMbJobLbL5",
+                price: "price_1H62S7EBG8ykmprMbJobLbL5",
+                quantity: 2,
+                tax_rates: []
+              }
+            ],
+            prorate: true,
+            proration_behavior: "create_prorations",
+            start_date: 1595029349,
+            tax_percent: nil,
+            transfer_data: nil,
+            trial_end: nil
+          }
+        ],
+        released_at: nil,
+        released_subscription: nil,
+        status: "active",
+        subscription: nil,
+      }.merge(params)
+    end
+
     def self.mock_invoice(lines, params={})
       in_id = params[:id] || "test_in_default"
       currency = params[:currency] || StripeMock.default_currency
