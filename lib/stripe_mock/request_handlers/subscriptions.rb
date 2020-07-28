@@ -263,8 +263,8 @@ module StripeMock
                    end
         plan_ids.each do |plan_id|
           assert_existence :plan, plan_id, plans[plan_id]
-        rescue Stripe::InvalidRequestError
-          assert_existence :price, plan_id, prices[plan_id]
+          #rescue Stripe::InvalidRequestError
+            #assert_existence :price, plan_id, prices[plan_id]
         end
         plan_ids.map { |plan_id| plans[plan_id] || prices[plan_id]}
       end
