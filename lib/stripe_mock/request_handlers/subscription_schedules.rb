@@ -30,6 +30,7 @@ module StripeMock
           customer: customer_id,
           end_behavior: params[:end_behavior],
           phases: params[:phases],
+          subscription: "test_sub_id"
         })
       end
     end
