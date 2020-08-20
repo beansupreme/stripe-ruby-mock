@@ -373,6 +373,11 @@ module StripeMock
 
     def self.mock_subscription_schedule(params={})
       customer = params[:customer] || "test_customer"
+      collection_method = if params[:default_settings]
+                            params[:default_settings][:collection_method] || "charge_automatically"
+                          else
+                            "charge_automatically"
+                          end
       {
         id: "mock_sub_sched_123",
         object: "subscription_schedule",
@@ -387,7 +392,7 @@ module StripeMock
         default_settings: {
           billing_cycle_anchor: "automatic",
           billing_thresholds: nil,
-          collection_method: "charge_automatically",
+          collection_method: collection_method,
           default_payment_method: nil,
           invoice_settings: nil,
           transfer_data: nil
