@@ -17,7 +17,7 @@ shared_examples 'Subscription Schedule API' do
       expect(subscriptions.data).to be_empty
       expect(subscriptions.count).to eq(0)
 
-      sub = Stripe::SubscriptionSchedule.create({
+      subscription_schedule = Stripe::SubscriptionSchedule.create({
         customer: customer.id,
         start_date: Time.now.to_i,
         end_behavior: 'cancel',
@@ -32,9 +32,18 @@ shared_examples 'Subscription Schedule API' do
         ],
       })
 
-      expect(sub.object).to eq('subscription_schedule')
-      expect(sub.customer).to eq(customer.id)
-      expect(sub.end_behavior).to eq('cancel')
+      expect(subscription_schedule.object).to eq('subscription_schedule')
+      expect(subscription_schedule.customer).to eq(customer.id)
+      expect(subscription_schedule.end_behavior).to eq('cancel')
+
+      subscriptions = Stripe::Subscription.list(customer: customer.id)
+      expect(subscriptions.data).to_not be_empty
+      expect(subscriptions.count).to eq(1)
+      expect(subscriptions.data.length).to eq(1)
+
+      expect(subscriptions.data.first.id).to eq(subscription_schedule.subscription)
+      expect(subscriptions.data.first.customer).to eq(customer.id)
+      expect(subscriptions.data.first.billing).to eq('charge_automatically')
     end
   end
 end
