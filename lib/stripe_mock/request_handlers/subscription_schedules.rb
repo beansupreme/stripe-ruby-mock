@@ -25,7 +25,9 @@ module StripeMock
           raise Stripe::InvalidRequestError.new("Received unknown parameter: #{unknown_params.join}", unknown_params.first.to_s, http_status: 400)
         end
 
-        subscription = Data.mock_subscription({id: "sub_id"})
+        subscription = Data.mock_subscription({ id: (params[:id] || new_id('su')), customer: customer_id })
+        subscriptions[subscription[:id]] = subscription
+        add_subscription_to_customer(customer, subscription)
 
         sub_sched = Data.mock_subscription_schedule({
           id: (params[:id] || new_id('sub_sched')),
