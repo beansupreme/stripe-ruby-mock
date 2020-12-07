@@ -40,6 +40,19 @@ shared_examples 'Invoice API' do
     end
   end
 
+  context "voiding an invoice" do
+    it "updates the status of an invoice to 'void'" do
+      invoice = Stripe::Invoice.create
+      invoice.save
+      expect(invoice.status).to eq("open")
+
+      Stripe::Invoice.void_invoice(invoice.id)
+
+      updated_invoice = Stripe::Invoice.retrieve(invoice.id)
+      expect(updated_invoice.status).to eq("void")
+    end
+  end
+
   context "retrieving a list of invoices" do
     before do
       @customer = Stripe::Customer.create(email: 'johnny@appleseed.com')

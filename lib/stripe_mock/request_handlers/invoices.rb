@@ -9,6 +9,7 @@ module StripeMock
         klass.add_handler 'get /v1/invoices/(.*)',           :get_invoice
         klass.add_handler 'get /v1/invoices',                :list_invoices
         klass.add_handler 'post /v1/invoices/(.*)/pay',      :pay_invoice
+        klass.add_handler 'post /v1/invoices/(.*)/void',     :void_invoice
         klass.add_handler 'post /v1/invoices/(.*)',          :update_invoice
       end
 
@@ -149,6 +150,13 @@ module StripeMock
           period_start: prorating ? invoice_date : preview_subscription[:current_period_start],
           period_end: prorating ? invoice_date : preview_subscription[:current_period_end],
           next_payment_attempt: preview_subscription[:current_period_end] + 3600 )
+      end
+
+      def void_invoice(route, method_url, params, headers)
+        route =~ method_url
+        assert_existence :invoice, $1, invoices[$1]
+        void_params = params.merge(status: 'void')
+        invoices[$1].merge!(void_params)
       end
 
       private
